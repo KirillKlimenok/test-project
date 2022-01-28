@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                 .securityContextRepository(contextRepository)
                 .authorizeExchange()
                 .pathMatchers("/", "/login", "/fivicon.ico").permitAll()
-                .pathMatchers("/admin").hasRole("ADMIN")
+//                .pathMatchers("/admin").hasRole("ADMIN")
                 .anyExchange().authenticated()
                 .and()
                 .build();

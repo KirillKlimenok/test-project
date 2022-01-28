@@ -38,10 +38,6 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public Mono<AuthResp> login(AuthReq authReq) {
-
-        log.info("password code: {}", passwordEncoder.encode(authReq.getPassword()));
-        log.info("password no encoded: {}", authReq.getPassword());
-
         return userService
                 .findByUsername(authReq.getUsername())
                 .cast(User.class)
