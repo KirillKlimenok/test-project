@@ -1,6 +1,7 @@
 package com.any.name.rest.impl;
 
 import com.any.name.config.JwtUtil;
+import com.any.name.model.AuthReq;
 import com.any.name.model.AuthResp;
 import com.any.name.model.RegRequest;
 import com.any.name.model.User;
@@ -36,35 +37,21 @@ public class UserControllerImpl implements UserController {
 
 
     @Override
-    public Mono<AuthResp> login(ServerWebExchange swe) {
+    public Mono<AuthResp> login(AuthReq authReq) {
 
-        log.info(passwordEncoder.encode("user"));
+        log.info("password code: {}", passwordEncoder.encode(authReq.getPassword()));
+        log.info("password no encoded: {}", authReq.getPassword());
 
-        Flux flux = swe.getRequest().getBody().doOnEach(System.out::println);
-        System.out.println(flux);
-
-        return swe.getFormData().flatMap(credentials ->
-                userService
-                        .findByUsername(credentials
-                                .getFirst("username")
-                        )
-                        .log()
-                        .cast(User.class)
-                        .map(user -> {
-                            String userRequestPassword = credentials.getFirst("password");
-                            if (passwordEncoder
-                                    .matches(
-                                            user.getPassword()
-                                            , userRequestPassword
-                                    )
-                            ) {
-                                return new AuthResp(jwtUtil.generateToken(user));
-                            } else {
-                                return new AuthResp(null);
-                            }
-                        }).log()
-                        .defaultIfEmpty(new AuthResp(null))
-        );
+        return userService
+                .findByUsername(authReq.getUsername())
+                .cast(User.class)
+                .map(user -> {
+                    if (passwordEncoder.matches(authReq.getPassword(), user.getPassword())) {
+                        return new AuthResp(jwtUtil.generateToken(user));
+                    } else {
+                        return new AuthResp(null);
+                    }
+                });
     }
 
 }
