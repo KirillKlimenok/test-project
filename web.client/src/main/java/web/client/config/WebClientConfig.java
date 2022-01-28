@@ -21,7 +21,6 @@ public class WebClientConfig {
                         connection
                                 .addHandlerLast(new ReadTimeoutHandler(2))
                                 .addHandlerLast(new WriteTimeoutHandler(2)));
-
         return WebClient
                 .builder()
                 .baseUrl(BASE_LINK)
