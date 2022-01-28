@@ -18,6 +18,6 @@ public interface BeerController {
     @GetMapping("/beers")
     Mono<ResponseEntity<Flux<Beer>>> getList();
 
-    @PostMapping
+    @PostMapping("/beers")
     ResponseEntity<Mono<Beer>> save(@RequestBody Beer beer);
 }
