@@ -1,5 +1,7 @@
 package com.any.name.rest;
 
+import com.any.name.model.AuthResp;
+import com.any.name.model.RegRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,5 +12,5 @@ import reactor.core.publisher.Mono;
 public interface UserController {
 
     @PostMapping("login")
-    Mono<ResponseEntity> login(ServerWebExchange swe);
+    Mono<AuthResp> login(ServerWebExchange swe);
 }
